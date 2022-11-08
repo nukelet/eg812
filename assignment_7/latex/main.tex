@@ -1,0 +1,55 @@
+\documentclass{article}
+
+\usepackage[portuguese]{babel}
+
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage[section]{placeins}
+
+\title{Lista 07}
+\author{Vinícius de Oliveira Peixoto Rodrigues (245294)}
+\date{Setembro de 2022}
+
+\begin{document}
+\maketitle
+
+\section*{Questão 1}
+
+As formas 1 e 2 são vulneráveis a spoofing por meio de um oracle attack:
+
+\begin{itemize}
+    \item Ana $A$ tenta iniciar uma conexão com Beto $B$; Caio intercepta a comunicação
+    \item $A \rightarrow C(B): N_a$ (Caio se passando por Beto)
+    \begin{itemize}
+        \item Caio abre paralelamente uma transação de autenticação, se passando por Ana:
+        \item $C(A) \rightarrow B: N_a$
+        \item $B \rightarrow C(A): E_k(N_a)$ (Caio obtém a resposta $E_k(N_a)$)
+    \end{itemize}
+    \item $C(B) \rightarrow A: E_k(N_a)$ (Caio efetivamente se passa por Beto)
+\end{itemize}
+
+A mesma ideia pode ser usada na forma 2.
+
+Essa vulnerabilidade vem do fato de que tanto na forma 1 quanto na forma 2, Beto está disposto a encriptar/decriptar o nonce de Ana "sem questionamentos". Isso pode ser resolvido na forma 3 por meio da função $f(N_a)$, que deve "acoplar" mais fortemente a mensagem ao destinatário (por exemplo, encriptando o nonce com a chave pública de Ana).
+
+\section*{Questão 2}
+
+Mesmo que a chave não tenha sido transmitida, esse esquema é vulnerável caso alguém consiga fazer sniffing das mensagens de handshake:
+
+\begin{itemize}
+    \item Ana tem chave de sessão $K$, número aleatório $A$
+    \item Ana gera $T = K \oplus A$ e envia para Beto
+    \item Caio escuta e guarda $T$
+    \item Beto envia de volta o valor $A$ obtido a partir de $K$
+    \item Caio escuta, guarda $A$ e calcula $T \oplus A = K$, obtendo a chave secreta
+\end{itemize}
+
+\subsection*{Questão 4}
+
+Para propósitos de correção de erro, faz pouco sentido implementar um ECC interno, visto que é mais provável que haja erros na transmissão do pacote já encriptado (e se houver, o erro vai se propagar e invalidar o ECC). Faz mais sentido implementar ECC externamente, concatenando o ECC e a mensagem cifrada.
+
+\subsection*{Questão 5}
+
+\end{document}

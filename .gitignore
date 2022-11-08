@@ -1,6 +1,4 @@
-*.swp
-*.aux
-*.log
-*.out
-*.gz
 books/
+*/latex/*
+!*.pdf
+!*.tex
